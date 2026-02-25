@@ -125,8 +125,8 @@ export function useGalleryService() {
     for (const item of items || []) {
       if (item.glb_url) {
         try {
-          const path = item.glb_url.split('/storage/v1/object/public/glb-files/')[1]
-          if (path) await supabase.storage.from('glb-files').remove([path])
+          const path = item.glb_url.split('/storage/v1/object/public/glb-file/')[1]
+          if (path) await supabase.storage.from('glb-file').remove([path])
         } catch (e) {}
       }
       await deleteItem(item.id)
@@ -161,13 +161,13 @@ export function useGalleryService() {
     const filePath = `glb/${userId}/${galleryId}/${fileName}`
     
     const { error: uploadError } = await supabase.storage
-      .from('glb-files')
+      .from('glb-file')
       .upload(filePath, file)
 
     if (uploadError) throw uploadError
 
-    const { data: urlData } = supabase.storage.from('glb-files').getPublicUrl(filePath)
-    const glbUrl = urlData?.publicUrl || `https://ngnjgjyxqiufiqgwdixf.supabase.co/storage/v1/object/public/glb-files/${filePath}`
+    const { data: urlData } = supabase.storage.from('glb-file').getPublicUrl(filePath)
+    const glbUrl = urlData?.publicUrl || `https://ngnjgjyxqiufiqgwdixf.supabase.co/storage/v1/object/public/glb-file/${filePath}`
 
     const item = {
       gallery_id: galleryId,
