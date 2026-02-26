@@ -4,8 +4,8 @@ import { useAuth } from './composables/useAuth'
 
 const { initAuth } = useAuth()
 
-onMounted(() => {
-  initAuth()
+onMounted(async () => {
+  await initAuth()
 })
 </script>
 

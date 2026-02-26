@@ -60,8 +60,14 @@ export function useAuth() {
     authState.isAuthenticated = false
   }
 
-  const initAuth = () => {
+  const initAuth = async () => {
     if (!authState.isDemoMode) {
+      const { data: { session } } = await supabase.auth.getSession()
+      if (session) {
+        authState.user = session.user
+        authState.isAuthenticated = true
+      }
+      
       const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
         authState.user = session?.user || null
         authState.isAuthenticated = !!session?.user
